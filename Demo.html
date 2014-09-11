@@ -6,7 +6,79 @@
 	<script type="text/javascript" src="jquery-1.11.0.min.js"></script>
 	<script type="text/javascript">
 $(document).ready(function(){
-	
+	var scale_num = $(".elementsSon").html().match(/viewBox\=\"[\d\.\s]+\"/).toString().replace('viewBox="','').replace('"','').split(" ");
+	var text_svg = $(".elementsSon").find("svg");
+	var text_wrap = $(".elementsSon").find("rect");
+	var text_text = $(".elementsSon").find("text");
+	var	scale = text_svg.width() / parseFloat(scale_num[2]);
+	var text_top = text_wrap.offset().top - $(".elementsSon").offset().top;
+	var text_left = text_wrap.offset().left - $(".elementsSon").offset().left;
+	var text_height = text_wrap.attr("height") * scale;
+	var text_width = text_wrap.attr("width") * scale;
+	var text_family = text_text.attr("font-family");
+	var text_color = text_text.attr("fill");
+	var text_title = text_text.text();
+	var text_div = $("<div class='svgText'></div>");
+	text_div
+		.css({
+			"width" : text_width,
+			"height" : text_height,
+			"top" : text_top,
+			"left" : text_left,
+			"position" : "absolute",
+			"line-height" : text_height + "px",
+			"font-size" : text_height + "px",
+			"color" : text_color,
+			"font-family" : text_family,
+		})
+		.text(text_title)
+		.appendTo($(".elementsSon"))
+		.on("click",function(){
+			$(this)
+				.attr("contenteditable","true")
+				.css({
+					"border" : "1px dashed #000",
+					"left" : text_left - 1,
+					"top" : text_top - 1,
+				})
+				.focus();
+				return false;
+		})
+		.on("keyup",function(){
+			var new_text = $(this).html();
+			$("#textCopy").html(new_text);
+			var new_height = $("#textCopy").height();
+		//	var num = new_height / text_height;
+		//	console.log(Math.round(num));
+			var now_size = parseFloat($(this).css("font-size"));
+			for(;now_size > 12;now_size--) {
+				$("#textCopy").css("font-size",now_size + "px");
+				var now_height = $("#textCopy").height();
+				if(Math.round(now_height / text_height) == 1) {
+					$(".svgText").css("font-size",now_size + "px");
+					return false;
+				}
+			}
+		});
+	$("#textCopy")
+		.css({
+			"width" : text_width,
+			"line-height" : text_height + "px",
+			"font-size" : text_height + "px",
+			"font-family" : text_family,		
+		})
+		.text(text_title);
+
+	$("body").on("click",function(){
+		$(".svgText")
+			.attr("contenteditable","false")
+			.css({
+				"border" : "0",
+				"left" : text_left,
+				"top" : text_top,
+			});
+	});
+	text_text.detach();
 })
 	</script>
 	<style>
@@ -25,20 +97,32 @@ $(document).ready(function(){
 	position:absolute;
 	top:0px;
 	left:0px;
-	width:100%;
-	height:100%;
+	width:500px;
+	height:500px;
+}
+
+.svgText {
+	outline:none;
+	text-align:center;
+}
+
+#textCopy {
+	position:absolute;
+	top:300px;
+	left:400px;
 }
 	</style>
 </head>
 <body>
 	<div id="main">
 		<div class="elementsSon">
-			<svg version="1.1" id="" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 671 641.5" enable-background="new 0 0 671 641.5" xml:space="preserve">
+			<svg version="1.1" id="" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 671 641.5" enable-background="new 0 0 671 641.5" xml:space="preserve" style="position:absolute">
 				<polygon fill="#00A0E9" points="549.3,634.8 340.1,529.1 134.6,641.5 170.4,410 0,249.2 231.3,211.8 331.5,0 438.6,208.4 671,238.3 505.9,404.5 "/>
 				<rect x="131" y="256.5" fill="none" width="432.1" height="72"/>
 				<text transform="matrix(1 0 0 1 131.0353 318.3704)" fill="#F7F8F8" font-family="'SimHei'" font-size="72">测试测试测试</text>
 			</svg>			
 		</div>
+		<div id="textCopy"></div>
 	</div>
 </body>
 </html>
