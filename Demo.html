@@ -48,17 +48,49 @@ $(document).ready(function(){
 			var new_text = $(this).html();
 			$("#textCopy").html(new_text);
 			var new_height = $("#textCopy").height();
-		//	var num = new_height / text_height;
-		//	console.log(Math.round(num));
-			var now_size = parseFloat($(this).css("font-size"));
-			for(;now_size > 12;now_size--) {
-				$("#textCopy").css("font-size",now_size + "px");
-				var now_height = $("#textCopy").height();
-				if(Math.round(now_height / text_height) == 1) {
-					$(".svgText").css("font-size",now_size + "px");
-					return false;
+			var num = new_height / text_height;
+			if(Math.round(num) > 1) {
+				var now_size = parseFloat($(this).css("font-size"));
+				if(now_size == 12) {
+					$("#textCopy").css("line-height","14px");
+					$(".svgText").css("line-height",14 + "px");
+				}
+				else {
+					for(;now_size >= 12;now_size--) {
+						$("#textCopy").css("font-size",now_size + "px");
+						var now_height = $("#textCopy").height();
+						if(Math.round(now_height / text_height) == 1) {
+							$(".svgText").css("font-size",now_size + "px");
+							return false;
+						}
+					}
 				}
 			}
+			
+		})
+		.on("keypress",function(){
+			var new_text = $(this).html();
+			$("#textCopy").html(new_text);
+			var new_height = $("#textCopy").height();
+			var num = new_height / text_height;
+			if(Math.round(num) > 1) {
+				var now_size = parseFloat($(this).css("font-size"));
+				if(now_size == 12) {
+					$("#textCopy").css("line-height","14px");
+					$(".svgText").css("line-height",14 + "px");
+				}
+				else {
+					for(;now_size >= 12;now_size--) {
+						$("#textCopy").css("font-size",now_size + "px");
+						var now_height = $("#textCopy").height();
+						if(Math.round(now_height / text_height) == 1) {
+							$(".svgText").css("font-size",now_size + "px");
+							return false;
+						}
+					}
+				}
+			}
+			
 		});
 	$("#textCopy")
 		.css({
@@ -77,6 +109,18 @@ $(document).ready(function(){
 				"left" : text_left,
 				"top" : text_top,
 			});
+	});
+	$("#btnLeft").click(function(){
+		$(".svgText").css("text-align","left");
+		return false;
+	});
+	$("#btnCenter").click(function(){
+		$(".svgText").css("text-align","center");
+		return false;
+	});
+	$("#btnRight").click(function(){
+		$(".svgText").css("text-align","right");
+		return false;
 	});
 	text_text.detach();
 })
@@ -104,12 +148,43 @@ $(document).ready(function(){
 .svgText {
 	outline:none;
 	text-align:center;
+	word-wrap:break-word;
+	word-break:normal;
+	vertical-align:middle;
+	display:table-cell;
 }
 
 #textCopy {
 	position:absolute;
 	top:300px;
 	left:400px;
+	word-wrap: break-word;
+	word-break: normal;
+}
+
+.btn {
+	position:absolute;
+	border:1px solid #000;
+	width:50px;
+	height:20px;
+	cursor:pointer;
+}
+
+#btnLeft {
+	left:0px;
+}
+
+#btnCenter {
+	left:55px;
+}
+
+#btnRight {
+	left:110px;
+}
+
+#btnOk {
+	left:165px;
+	width:65px;
 }
 	</style>
 </head>
@@ -123,6 +198,10 @@ $(document).ready(function(){
 			</svg>			
 		</div>
 		<div id="textCopy"></div>
+		<div id="btnLeft" class="btn">左对齐</div>
+		<div id="btnRight" class="btn">右对齐</div>
+		<div id="btnCenter" class="btn">居中</div>
+		<div id="btnOk" class="btn">div转svg</div>
 	</div>
 </body>
 </html>
