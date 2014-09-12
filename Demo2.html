@@ -8,9 +8,10 @@
 $(document).ready(function(){
 	var scale_num = $(".elementsSon").html().match(/viewBox\=\"[\d\.\s]+\"/).toString().replace('viewBox="','').replace('"','').split(" ");
 	var text_svg = $(".elementsSon").find("svg");
-	var text_wrap = $(".elementsSon").find("rect");
+	var text_wrap = $(".textPlaceholder");
 	var text_text = $(".elementsSon").find("text");
 	var	scale = text_svg.width() / parseFloat(scale_num[2]);
+	var min_svg_width = text_svg.width();
 	var text_top = text_wrap.offset().top - $(".elementsSon").offset().top;
 	var text_left = text_wrap.offset().left - $(".elementsSon").offset().left;
 	var text_height = text_wrap.attr("height") * scale;
@@ -149,7 +150,7 @@ $(document).ready(function(){
 	top:0px;
 	left:0px;
 	width:500px;
-	height:500px;
+	height:76px;
 }
 
 .svgText {
@@ -217,8 +218,8 @@ $(document).ready(function(){
 								<rect x="35.4" y="279.1" fill="#F1F1D9" width="433.5" height="8.7"/>
 								<rect x="35.4" y="212" fill="#F1F1D9" width="433.5" height="8.7"/>
 							</g>
-							<rect x="179.7" y="232.5" fill="none" width="145" height="35.3" data-transform="matrix(1.0103 0 0 1 178.921 263.4177)" data-font-family="'SimHei'" data-font-size="36" data-color="#000000" />
-							<text transform="matrix(1.0103 0 0 1 178.921 263.4177)" font-family="'SimHei'" font-size="36" fill="#FFFFFF">示例文字</text>
+							<rect class="textPlaceholder" x="179.7" y="232.5" fill="none" width="145" height="35.3" data-transform="matrix(1.0103 0 0 1 178.921 263.4177)" data-font-family="'SimHei'" data-font-size="36" data-color="#000000" />
+							<text transform="matrix(1.0103 0 0 1 178.921 263.4177)" font-family="'SimHei'" font-size="36" fill="#AB7253">示例文字</text>
 							<g>
 								<rect x="35.4" y="220.7" fill="#AB7253" width="433.5" height="3.2"/>
 								<rect x="35.4" y="275.9" fill="#AB7253" width="433.5" height="3.2"/>
