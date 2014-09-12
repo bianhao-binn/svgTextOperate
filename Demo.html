@@ -49,6 +49,9 @@ $(document).ready(function(){
 		})
 		.on("keypress",function(){
 			svgTextShow();
+		})
+		.on("keydown",function(){
+			svgTextShow();		
 		});
 	function svgTextShow() {
 		var new_text = text_div.html();
@@ -56,34 +59,42 @@ $(document).ready(function(){
 		var new_height = $("#textCopy").height();
 		var new_line = parseFloat(text_div.css("line-height"));
 		var num = new_height / new_line;
-		if(Math.round(num) > 1) {
-			console.log(num);
-			var now_size = parseFloat(text_div.css("font-size"));
-			if(now_size == 12) {
-				var now_line = text_div.height();
-				var now_line_show = Math.round(now_line / num);
-				if(now_line_show < 14) now_line_show = 14;
-				$("#textCopy").css("line-height",now_line_show + "px");
-				text_div.css("line-height",now_line_show + "px");
-			}
-			else {
-				for(;now_size >= 12;now_size--) {
-					$("#textCopy").css("font-size",now_size + "px");
-					var now_height = $("#textCopy").height();
-					if(Math.round(now_height / text_height) == 1) {
-						$(".svgText").css("font-size",now_size + "px");
-						return;
-					}
+		var now_size = parseFloat(text_div.css("font-size"));
+		// 加字操作
+		if(now_size == 12) {
+			var now_line = text_div.height();
+			var now_line_show = Math.round(now_line / num);
+			if(now_line_show < 14) now_line_show = 14;
+			$("#textCopy").css("line-height",now_line_show + "px");
+			text_div.css("line-height",now_line_show + "px");
+		}
+		else {
+			for(var drag = true;(now_size >= 12) && drag;now_size--) {
+				$("#textCopy").css("font-size",now_size + "px");
+				var now_height = $("#textCopy").height();
+				if(Math.round(now_height / text_height) == 1) {
+					text_div.css("font-size",now_size + "px");
+					drag = false;
 				}
 			}
 		}
-		else {
+		// 减字操作
+		now_size = parseFloat(text_div.css("font-size"));
+		for(var drag = true;(now_size <= text_height) && (Math.round(num) == 1) && drag;now_size++) {
+			$("#textCopy").css("font-size",now_size + "px");
+			var now_height = $("#textCopy").height();
+			if(Math.round(now_height / text_height) > 1) {
+				text_div.css("font-size",now_size - 1 + "px");
+				drag = false;
+			}
+		}
+//		else {
 //			var now_size = text_div.height();
 //			$("#textCopy").css({
 //				"line-height" : now_size + "px",
 //				"font-size" : now_size + "px",
 //			});
-		}
+//		}
 	}
 	$("#textCopy")
 		.css({
