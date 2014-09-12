@@ -124,6 +124,15 @@ $(document).ready(function(){
 		$(".svgText").css("text-align","right");
 		return false;
 	});
+	$("#btnTest").click(function(){
+		//让svg按比例放大
+		var n_left = $(".elementsSon").find("#n").offset().left - $(".elementsSon").offset().left;
+		var n_transform = $(".elementsSon").find("#n").attr("transform");
+		var n_translate = n_transform.match(/translate\([\d\.\,\s\-]+/).toString().replace('translate(','').split(",");
+		var n_scale = n_transform.match(/scale\([\d\.\,\s\-]+/).toString().replace('scale(','').split(",");
+		
+		console.log(n_scale);	
+	});
 	text_text.detach();
 })
 	</script>
@@ -131,6 +140,10 @@ $(document).ready(function(){
 * {
 	padding:0px;
 	margin:0px;
+}
+
+svg {
+	overflow:visible;
 }
 
 #main {
@@ -194,6 +207,12 @@ $(document).ready(function(){
 	left:165px;
 	width:65px;
 }
+
+#btnTest {
+	left:235px;
+	width:100px;
+}
+
 	</style>
 </head>
 <body>
@@ -247,6 +266,7 @@ $(document).ready(function(){
 		<div id="btnRight" class="btn">右对齐</div>
 		<div id="btnCenter" class="btn">居中</div>
 		<div id="btnOk" class="btn">div转svg</div>
+		<div id="btnTest" class="btn">测试专用按钮</div>
 	</div>
 </body>
 </html>
