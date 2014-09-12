@@ -87,14 +87,11 @@ $(document).ready(function(){
 				text_div.css("font-size",now_size - 1 + "px");
 				drag = false;
 			}
+			if(now_size == parseInt(text_height)) {
+				text_div.css("font-size",now_size + "px");
+				drag = false;
+			}
 		}
-//		else {
-//			var now_size = text_div.height();
-//			$("#textCopy").css({
-//				"line-height" : now_size + "px",
-//				"font-size" : now_size + "px",
-//			});
-//		}
 	}
 	$("#textCopy")
 		.css({
