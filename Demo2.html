@@ -4,6 +4,7 @@
 	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
 	<title></title>
 	<script type="text/javascript" src="jquery-1.11.0.min.js"></script>
+	<script type="text/javascriptp" src="raphael-min.js"></script>
 	<script type="text/javascript">
 $(document).ready(function(){
 	var scale_num = $(".elementsSon").html().match(/viewBox\=\"[\d\.\s]+\"/).toString().replace('viewBox="','').replace('"','').split(" ");
@@ -58,40 +59,21 @@ $(document).ready(function(){
 		var new_text = text_div.html();
 		$("#textCopy").html(new_text);
 		var new_height = $("#textCopy").height();
-		var new_line = parseFloat(text_div.css("line-height"));
-		var num = new_height / new_line;
-		var now_size = parseFloat(text_div.css("font-size"));
-		// 加字操作
-		if(now_size == 12) {
-			var now_line = text_div.height();
-			var now_line_show = Math.round(now_line / num);
-			if(now_line_show < 14) now_line_show = 14;
-			$("#textCopy").css("line-height",now_line_show + "px");
-			text_div.css("line-height",now_line_show + "px");
-		}
-		else {
-			for(var drag = true;(now_size >= 12) && drag;now_size--) {
-				$("#textCopy").css("font-size",now_size + "px");
-				var now_height = $("#textCopy").height();
-				if(Math.round(now_height / text_height) == 1) {
-					text_div.css("font-size",now_size + "px");
+		var num = new_height / text_height;
+		// 字数超出
+		if(Math.round(num) > 1) {
+			var new_width = text_div.width();
+			for(var drag = true;drag;new_width + 2) {
+				$("#textCopy").width(new_width);
+				if($("#textCopy").height() / text_height <= 1) {
+					text_div.width(new_width);
 					drag = false;
 				}
 			}
 		}
-		// 减字操作
-		now_size = parseFloat(text_div.css("font-size"));
-		for(var drag = true;(now_size <= text_height) && (Math.round(num) == 1) && drag;now_size++) {
-			$("#textCopy").css("font-size",now_size + "px");
-			var now_height = $("#textCopy").height();
-			if(Math.round(now_height / text_height) > 1) {
-				text_div.css("font-size",now_size - 1 + "px");
-				drag = false;
-			}
-			if(now_size == parseInt(text_height)) {
-				text_div.css("font-size",now_size + "px");
-				drag = false;
-			}
+		// 字数未超出
+		else {
+			
 		}
 	}
 	$("#textCopy")
@@ -130,8 +112,22 @@ $(document).ready(function(){
 		var n_transform = $(".elementsSon").find("#n").attr("transform");
 		var n_translate = n_transform.match(/translate\([\d\.\,\s\-]+/).toString().replace('translate(','').split(",");
 		var n_scale = n_transform.match(/scale\([\d\.\,\s\-]+/).toString().replace('scale(','').split(",");
+		var old_svg_width = text_svg.width();
+		var old_n_width = text_svg.find("#n")[0].getBBox().width;
+		var old_text_width = $("#svgText").width();
+		var new_n_scale = (old_n_width + 100) / old_n_width;
+		var newn_scale = parseFloat(n_scale[0]) * new_n_scale;
+		var new_n_left = n_translate[0] - n_left * (new_n_scale - 1);
+		var new_n_transform = "translate(" + new_n_left + "," + n_translate[1] + ") scale(" + newn_scale + "," + n_scale[1] + ")";
+		var ne_transform = $(".elementsSon").find("#ne").attr("transform");
+		var ne_translate = ne_transform.match(/translate\([\d\.\,\s\-]+/).toString().replace('translate(','').split(",");
+		var ne_scale = ne_transform.match(/scale\([\d\.\,\s\-]+/).toString().replace('scale(','').split(",");
+		var new_ne_left = parseFloat(ne_translate[0]) + 100 / scale;
+		var new_ne_transform = "translate(" + new_ne_left + "," + ne_translate[1] + ") scale(" + ne_scale[0] + "," + ne_scale[1] + ")";
 		
-		console.log(n_scale);	
+		text_svg.find("#n").attr("transform",new_n_transform);
+		text_svg.find("#ne").attr("transform",new_ne_transform);
+		return false;
 	});
 	text_text.detach();
 })
@@ -219,7 +215,7 @@ svg {
 	<div id="main">
 		<div class="elements">
 			<div class="elementsSon">
-				<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0.9 213 498.2 75.8" enable-background="new 0.9 213 498.2 75.8" xml:space="preserve">
+				<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0.9 213 498.2 75.8" enable-background="new 0.9 213 498.2 75.8" xml:space="preserve">
 					<g id="hx">
 						<g id="nw" transform="translate(1, 1) scale(1, 1)">
 							<g>
@@ -237,7 +233,7 @@ svg {
 								<rect x="35.4" y="279.1" fill="#F1F1D9" width="433.5" height="8.7"/>
 								<rect x="35.4" y="212" fill="#F1F1D9" width="433.5" height="8.7"/>
 							</g>
-							<rect class="textPlaceholder" x="179.7" y="232.5" fill="none" width="145" height="35.3" data-transform="matrix(1.0103 0 0 1 178.921 263.4177)" data-font-family="'SimHei'" data-font-size="36" data-color="#000000" />
+							<rect class="textPlaceholder" x="60" y="225" fill="none" width="385" height="50" data-transform="matrix(1.0103 0 0 1 178.921 263.4177)" data-font-family="'SimHei'" data-font-size="36" data-color="#000000"/>
 							<text transform="matrix(1.0103 0 0 1 178.921 263.4177)" font-family="'SimHei'" font-size="36" fill="#AB7253">示例文字</text>
 							<g>
 								<rect x="35.4" y="220.7" fill="#AB7253" width="433.5" height="3.2"/>
@@ -258,7 +254,7 @@ svg {
 							</g>
 						</g>
 					</g>
-				</svg>	
+				</svg>
 			</div>
 		</div>
 		<div id="textCopy"></div>
