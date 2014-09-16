@@ -7,7 +7,6 @@
 	<script type="text/javascriptp" src="raphael-min.js"></script>
 	<script type="text/javascript">
 $(document).ready(function(){
-    console.log("测试");
 	var scale_num = $(".elementsSon").html().match(/viewBox\=\"[\d\.\s]+\"/).toString().replace('viewBox="','').replace('"','').split(" ");
 	var text_svg = $(".elementsSon").find("svg");
 	var text_wrap = $(".textPlaceholder");
@@ -146,7 +145,10 @@ $(document).ready(function(){
 		text_svg.find("#ne").attr("transform",new_ne_transform);
 		return false;
 	});
-	
+    $("#btnOk").click(function(){
+           
+    })
+
 	function traction(obj){
 		console.log(obj);
 		var n_left = $(".elementsSon").find("#n").offset().left - $(".elementsSon").offset().left;
@@ -169,7 +171,7 @@ $(document).ready(function(){
 		text_svg.find("#n").attr("transform",new_n_transform);
 		text_svg.find("#ne").attr("transform",new_ne_transform);	
 	}
-	text_text.detach();
+	text_text.css("display","none");
 })
 	</script>
 	<style>
