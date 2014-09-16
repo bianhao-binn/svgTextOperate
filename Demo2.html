@@ -12,11 +12,11 @@ $(document).ready(function(){
 	var text_wrap = $(".textPlaceholder");
 	var text_text = $(".elementsSon").find("text");
 	var	scale = text_svg.width() / parseFloat(scale_num[2]);
+	var min_svg_width = text_svg.width();
 	var text_top = text_wrap.offset().top - $(".elementsSon").offset().top;
 	var text_left = text_wrap.offset().left - $(".elementsSon").offset().left;
 	var text_height = text_wrap.attr("height") * scale;
 	var text_width = text_wrap.attr("width") * scale;
-	var min_text_width = Math.round(text_wrap.attr("width") * scale);
 	var text_family = text_text.attr("font-family");
 	var text_color = text_text.attr("fill");
 	var text_title = text_text.text();
@@ -63,10 +63,9 @@ $(document).ready(function(){
 		// 字数超出
 		if(Math.round(num) > 1) {
 			var new_width = text_div.width();
-			for(var drag = true;drag;new_width = new_width + 2) {
+			for(var drag = true;drag;new_width + 2) {
 				$("#textCopy").width(new_width);
 				if($("#textCopy").height() / text_height <= 1) {
-					traction(new_width - $(".svgText").width())
 					text_div.width(new_width);
 					drag = false;
 				}
@@ -74,22 +73,7 @@ $(document).ready(function(){
 		}
 		// 字数未超出
 		else {
-			var new_width = text_div.width();
-			if(new_width > min_text_width) {
-				for(var drag = true;drag;new_width = new_width - 2) {
-					$("#textCopy").width(new_width);
-					if($("#textCopy").height() / text_height > 1) {
-						traction(new_width + 2 - $(".svgText").width())
-						text_div.width(new_width + 2);
-						drag = false;
-					}
-					if(new_width < min_text_width) {
-						traction(min_text_width - $(".svgText").width())
-						text_div.width(min_text_width);
-						drag = false;
-					}
-				}
-			}
+			
 		}
 	}
 	$("#textCopy")
@@ -131,43 +115,20 @@ $(document).ready(function(){
 		var old_svg_width = text_svg.width();
 		var old_n_width = text_svg.find("#n")[0].getBBox().width;
 		var old_text_width = $("#svgText").width();
-		var new_n_scale = (old_n_width + 10) / old_n_width;
+		var new_n_scale = (old_n_width + 100) / old_n_width;
 		var newn_scale = parseFloat(n_scale[0]) * new_n_scale;
 		var new_n_left = n_translate[0] - n_left * (new_n_scale - 1);
 		var new_n_transform = "translate(" + new_n_left + "," + n_translate[1] + ") scale(" + newn_scale + "," + n_scale[1] + ")";
 		var ne_transform = $(".elementsSon").find("#ne").attr("transform");
 		var ne_translate = ne_transform.match(/translate\([\d\.\,\s\-]+/).toString().replace('translate(','').split(",");
 		var ne_scale = ne_transform.match(/scale\([\d\.\,\s\-]+/).toString().replace('scale(','').split(",");
-		var new_ne_left = parseFloat(ne_translate[0]) + 10 / scale;
+		var new_ne_left = parseFloat(ne_translate[0]) + 100 / scale;
 		var new_ne_transform = "translate(" + new_ne_left + "," + ne_translate[1] + ") scale(" + ne_scale[0] + "," + ne_scale[1] + ")";
 		
 		text_svg.find("#n").attr("transform",new_n_transform);
 		text_svg.find("#ne").attr("transform",new_ne_transform);
 		return false;
 	});
-	
-	function traction(obj){
-		console.log(obj);
-		var n_left = $(".elementsSon").find("#n").offset().left - $(".elementsSon").offset().left;
-		var n_transform = $(".elementsSon").find("#n").attr("transform");
-		var n_translate = n_transform.match(/translate\([\d\.\,\s\-]+/).toString().replace('translate(','').split(",");
-		var n_scale = n_transform.match(/scale\([\d\.\,\s\-]+/).toString().replace('scale(','').split(",");
-		var old_svg_width = text_svg.width();
-		var old_n_width = text_svg.find("#n")[0].getBBox().width;
-		var old_text_width = $("#svgText").width();
-		var new_n_scale = (old_n_width + obj) / old_n_width;
-		var newn_scale = parseFloat(n_scale[0]) * new_n_scale;
-		var new_n_left = n_translate[0] - n_left * (new_n_scale - 1);
-		var new_n_transform = "translate(" + new_n_left + "," + n_translate[1] + ") scale(" + newn_scale + "," + n_scale[1] + ")";
-		var ne_transform = $(".elementsSon").find("#ne").attr("transform");
-		var ne_translate = ne_transform.match(/translate\([\d\.\,\s\-]+/).toString().replace('translate(','').split(",");
-		var ne_scale = ne_transform.match(/scale\([\d\.\,\s\-]+/).toString().replace('scale(','').split(",");
-		var new_ne_left = parseFloat(ne_translate[0]) + obj / scale;
-		var new_ne_transform = "translate(" + new_ne_left + "," + ne_translate[1] + ") scale(" + ne_scale[0] + "," + ne_scale[1] + ")";
-		
-		text_svg.find("#n").attr("transform",new_n_transform);
-		text_svg.find("#ne").attr("transform",new_ne_transform);	
-	}
 	text_text.detach();
 })
 	</script>
