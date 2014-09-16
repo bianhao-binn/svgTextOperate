@@ -123,7 +123,19 @@ $(document).ready(function(){
 		$(".svgText").css("text-align","right");
 		return false;
 	});
-	text_text.detach();
+    $("#btnOk").click(function(){
+        var new_text = text_div.text();
+        text_text.text(new_text);
+        text_div.detach();
+        var text_matrix = text_text.attr("transform").replace("matrix(","").replace(")","").split(" ");
+        var text_matrix_left = (text_wrap.offset().left - text_svg.offset().left) / scale;
+        var text_matrix_top = (text_wrap.offset().top - text_svg.offset().top + text_wrap.height()) / scale + parseFloat(text_wrap.attr("height")) * scale;
+        var new_text_matrix = "matrix(" + text_matrix[0] + " " + text_matrix[1] + " " + text_matrix[2] + " " + text_matrix[3] + " " + text_matrix_left + " " + text_matrix_top + ")";
+        text_text.attr("transform",new_text_matrix);
+        console.log(text_wrap.attr("height"));
+        text_text.css("display","block");
+    })
+	text_text.css("display","none");
 })
 	</script>
 	<style>
