@@ -7,6 +7,7 @@
 	<script type="text/javascriptp" src="raphael-min.js"></script>
 	<script type="text/javascript">
 $(document).ready(function(){
+    console.log("测试");
 	var scale_num = $(".elementsSon").html().match(/viewBox\=\"[\d\.\s]+\"/).toString().replace('viewBox="','').replace('"','').split(" ");
 	var text_svg = $(".elementsSon").find("svg");
 	var text_wrap = $(".textPlaceholder");
