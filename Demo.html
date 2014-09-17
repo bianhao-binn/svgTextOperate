@@ -4,6 +4,7 @@
 	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
 	<title></title>
 	<script type="text/javascript" src="jquery-1.11.0.min.js"></script>
+    <script type="text/javascripWsrc="raphael-min.js"></script>
 	<script type="text/javascript">
 $(document).ready(function(){
 	var scale_num = $(".elementsSon").html().match(/viewBox\=\"[\d\.\s]+\"/).toString().replace('viewBox="','').replace('"','').split(" ");
@@ -129,10 +130,10 @@ $(document).ready(function(){
         text_div.detach();
         var text_matrix = text_text.attr("transform").replace("matrix(","").replace(")","").split(" ");
         var text_matrix_left = (text_wrap.offset().left - text_svg.offset().left) / scale;
-        var text_matrix_top = (text_wrap.offset().top - text_svg.offset().top + text_wrap.height()) / scale + parseFloat(text_wrap.attr("height")) * scale;
+        var text_matrix_top = (text_wrap.offset().top - text_svg.offset().top) / scale + $(".elementsSon").find("rect")[0].getBBox().height;
         var new_text_matrix = "matrix(" + text_matrix[0] + " " + text_matrix[1] + " " + text_matrix[2] + " " + text_matrix[3] + " " + text_matrix_left + " " + text_matrix_top + ")";
         text_text.attr("transform",new_text_matrix);
-        console.log(text_wrap.attr("height"));
+        console.log($(".elementsSon").find("rect")[0].getBBox().height * scale + "  " + (text_wrap.offset().top - text_svg.offset().top) / scale);
         text_text.css("display","block");
     })
 	text_text.css("display","none");
